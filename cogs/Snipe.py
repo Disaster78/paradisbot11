@@ -66,4 +66,4 @@ class Snipe(commands.Cog):
             await ctx.send('No recently deleted messages to snipe')
 
 def setup(bot):
-    bot.add_cog(Snipe(bot))
+    await bot.add_cog(Snipe(bot))
