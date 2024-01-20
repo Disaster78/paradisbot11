@@ -71,7 +71,7 @@ class Butts(discord.ui.View):
             embed = discord.Embed(title=f"You don't have the permissions for this!")
             await interaction.send(embed=embed, ephemeral=True)
 
-@tree.command(name="ticket", description="Setup the ticket system!")
+@bot.tree.command(name="ticket", description="Setup the ticket system!")
 async def ticket(ctx: discord.Interaction):
     if ctx.user.guild_permissions.administrator and ctx.user is not None:
         embed = discord.Embed(description=f"Press the button below to create a Ticket!")
