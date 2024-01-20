@@ -7,7 +7,6 @@ keep_alive()
 
 bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
 bot.remove_command("help")
-tree = app_commands.CommandTree(bot)
 token = os.environ['TOKEN']
 
 cogs = ["cogs.basic", "cogs.Snipe", "cogs.help", "cogs.moderation", "cogs.WelcomeCog"]  # Modify the cogs list to include the correct path to the basic.commands file
@@ -22,7 +21,7 @@ async def on_ready():
             print(cog + " was loaded.")
         except Exception as e:
             print(e)
-
+    await tree.sync(guild=discord.Object(id=1196104116703866991))
 @bot.event 
 async def on_message(message):
     if bot.user.mention in message.content:
