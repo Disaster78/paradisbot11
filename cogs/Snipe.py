@@ -1,5 +1,5 @@
-from nextcord import Embed, Colour
-from nextcord.ext import commands
+from discord.py import Embed, Colour
+from discord.ext import commands
 
 class Snipe(commands.Cog):
     def __init__(self, bot):
