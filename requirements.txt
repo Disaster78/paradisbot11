@@ -1,2 +1,2 @@
-nextcord==3.0.0
+nextcord==2.6.0
 flask==3.0.1
