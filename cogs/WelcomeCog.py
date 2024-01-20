@@ -38,4 +38,4 @@ class WelcomeCog(commands.Cog):
             await channel.send(f"{after.mention}",embed=embed)
 
 def setup(bot):
-    bot.add_cog(WelcomeCog(bot))
+    await bot.add_cog(WelcomeCog(bot))
