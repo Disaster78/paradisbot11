@@ -22,7 +22,7 @@ async def on_ready():
         except Exception as e:
             print(e)
 
-@bot.event 
+@bot.event
 async def on_message(message):
     if bot.user.mention in message.content:
         await message.reply("Hello Pookie")
@@ -62,7 +62,6 @@ class Butts(discord.ui.View):
         if interaction.user.guild_permissions.administrator and interaction.user is not None:
             embed = discord.Embed(title=f"Claimed Ticket", description=f"Your ticket will be handled by {interaction.user.mention}.")
             await interaction.send(embed=embed)
-            interaction = await bot.wait_for("button_click", check=lambda inter: inter.custom_id == "teste2")
 
             async def button_callback(button_inter: discord.Interaction):
                 Butts.disabled = True
@@ -79,5 +78,12 @@ async def ticket(ctx: discord.Interaction):
     else:
         embed = discord.Embed(title=f"You don't have the permissions for this!")
         await ctx.response.send_message(embed=embed, ephemeral=True)
+
+@bot.event
+async def on_button_click(interaction: discord.Interaction, button: discord.ui.Button):
+    view = button.view
+    if isinstance(view, Butts):
+        if button.custom_id == "teste2":
+            await interaction.response.send_message("Button clicked!", ephemeral=True)
 
 bot.run(token)
