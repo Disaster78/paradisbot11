@@ -13,6 +13,7 @@ cogs = ["cogs.basic", "cogs.Snipe", "cogs.help", "cogs.moderation", "cogs.Welcom
 
 @bot.event
 async def on_ready():
+    await bot.tree.sync(guild=discord.Object(id=1196104116703866991))
     print("The bot is ready!")
     print("Loading cogs . . .")
     for cog in cogs:
@@ -21,7 +22,6 @@ async def on_ready():
             print(cog + " was loaded.")
         except Exception as e:
             print(e)
-    await tree.sync(guild=discord.Object(id=1196104116703866991))
 @bot.event 
 async def on_message(message):
     if bot.user.mention in message.content:
