@@ -45,7 +45,7 @@ class Buttons(discord.ui.View):
         channel_id = channel.id
         embed = discord.Embed(title="Ticket Support", description=f"Thank you for requesting help.\nState your problems or questions here and await a response.")
         await channel.send(embed=embed, view=Butts())
-        await interaction.send(f"Ticket created <#{channel_id}>..", ephemeral=True)
+        await interaction.response.send_message(f"Ticket created <#{channel_id}>..", ephemeral=True)
 
 class Butts(discord.ui.View):
 
@@ -61,20 +61,21 @@ class Butts(discord.ui.View):
     async def teste2(self, button: discord.ui.Button, interaction: discord.Interaction):
         if interaction.user.guild_permissions.administrator and interaction.user is not None:
             embed = discord.Embed(title=f"Claimed Ticket", description=f"Your ticket will be handled by {interaction.user.mention}.")
-            await interaction.send(embed=embed)
+            await interaction.response.send_message(embed=embed)
 
             async def button_callback(button_inter: discord.Interaction):
                 Butts.disabled = True
             Butts.callback = button_callback
         else:
             embed = discord.Embed(title=f"You don't have the permissions for this!")
-            await interaction.send(embed=embed, ephemeral=True)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
 
 @bot.tree.command(name="ticket", description="Setup the ticket system!")
 async def ticket(ctx: discord.Interaction):
     if ctx.user.guild_permissions.administrator and ctx.user is not None:
         embed = discord.Embed(description=f"Press the button below to create a Ticket!")
-        await ctx.response.send_message(embed=embed, view=Buttons())
+        buttons_view = Buttons()
+        await ctx.response.send_message(embed=embed, view=buttons_view)
     else:
         embed = discord.Embed(title=f"You don't have the permissions for this!")
         await ctx.response.send_message(embed=embed, ephemeral=True)
