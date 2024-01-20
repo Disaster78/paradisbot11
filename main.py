@@ -7,7 +7,7 @@ keep_alive()
 bot = commands.Bot(command_prefix=".", intents=nextcord.Intents.all())
 bot.remove_command("help")
 
-token = os.environ['TOKEN']
+token = process.env['TOKEN']
 
 cogs = ["cogs.basic","cogs.Snipe","cogs.help","cogs.moderation","cogs.WelcomeCog"]  # Modify the cogs list to include the correct path to the basic.commands file
 
