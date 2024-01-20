@@ -13,7 +13,6 @@ cogs = ["cogs.basic", "cogs.Snipe", "cogs.help", "cogs.moderation", "cogs.Welcom
 
 @bot.event
 async def on_ready():
-    await bot.tree.sync(guild=discord.Object(id=1196104116703866991))
     print("The bot is ready!")
     print("Loading cogs . . .")
     for cog in cogs:
@@ -29,58 +28,6 @@ async def on_message(message):
         await message.reply("Hello Pookie")
     await bot.process_commands(message)
 
-class Buttons(discord.ui.View):
-
-    def __init__(self):
-        super().__init__()
-        self.value = None
-
-    @discord.ui.button(label="Ticket Support", style=discord.ButtonStyle.green, emoji="📧")
-    async def teste3(self, button: discord.ui.Button, button_ctx: discord.Interaction):
-        overwrites = {
-            button_ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-            button_ctx.guild.me: discord.PermissionOverwrite(read_messages=True),
-            button_ctx.user: discord.PermissionOverwrite(read_messages=True)
-        }
-        channel = await button_ctx.guild.create_text_channel(f"Ticket-", overwrites=overwrites)
-        channel_id = channel.id
-        embed = discord.Embed(title="Ticket Support", description=f"Thank you for requesting help.\nState your problems or questions here and await a response.")
-        await channel.send(embed=embed, view=Butts())
-        await button_ctx.send(f"Ticket created <#{channel_id}>..", ephemeral=True)
-
-class Butts(discord.ui.View):
-
-    def __init__(self):
-        super().__init__()
-        self.value = None
-
-    @discord.ui.button(label="Close Ticket", style=discord.ButtonStyle.red, emoji="📧")
-    async def teste(self, button: discord.ui.Button, interaction: discord.Interaction):
-        await interaction.channel.delete()
-
-    @discord.ui.button(label="Claim Ticket", style=discord.ButtonStyle.green, emoji="📧")
-    async def teste2(self, button: discord.ui.Button, interaction: discord.Interaction):
-        if interaction.user.guild_permissions.administrator and interaction.user is not None:
-            embed = discord.Embed(title=f"Claimed Ticket", description=f"Your ticket will be handled by {interaction.user.mention}.")
-            await interaction.send(embed=embed)
-            interaction = await bot.wait_for("button_click", check=lambda inter: inter.custom_id == "teste2")
-
-            async def button_callback(button_inter: discord.Interaction):
-                Butts.disabled = True
-            Butts.callback = button_callback
-        else:
-            embed = discord.Embed(title=f"You don't have the permissions for this!")
-            await interaction.send(embed=embed, ephemeral=True)
-
-@bot.tree.command(name="ticket", description="Setup the ticket system!")
-async def ticket(ctx: discord.Interaction):
-    if ctx.user.guild_permissions.administrator and ctx.user is not None:
-        embed = discord.Embed(description=f"Press the button below to create a Ticket!")
-        buttons_view = Buttons()
-        await discord.interaction.response.defer(embed=embed, view=buttons_view)
-    else:
-        embed = discord.Embed(title=f"You don't have the permissions for this!")
-        await discord.interaction.defer(embed=embed, ephemeral=True)
 
     
 bot.run(token)
