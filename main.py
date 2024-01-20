@@ -1,5 +1,4 @@
 import discord
-from discord import app_commands
 from discord.ext import commands
 import os
 from keep_alive import keep_alive
@@ -22,6 +21,7 @@ async def on_ready():
             print(cog + " was loaded.")
         except Exception as e:
             print(e)
+
 @bot.event 
 async def on_message(message):
     if bot.user.mention in message.content:
@@ -37,9 +37,9 @@ class Buttons(discord.ui.View):
     @discord.ui.button(label="Ticket Support", style=discord.ButtonStyle.green, emoji="📧")
     async def teste3(self, button: discord.ui.Button, interaction: discord.Interaction):
         overwrites = {
-            discord.interaction.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-            discord.interaction.guild.me: discord.PermissionOverwrite(read_messages=True),
-            discord.interaction.user: discord.PermissionOverwrite(read_messages=True)
+            interaction.guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            interaction.guild.me: discord.PermissionOverwrite(read_messages=True),
+            interaction.user: discord.PermissionOverwrite(read_messages=True)
         }
         channel = await interaction.guild.create_text_channel(f"Ticket-", overwrites=overwrites)
         channel_id = channel.id
