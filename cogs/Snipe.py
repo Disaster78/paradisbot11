@@ -1,4 +1,4 @@
-from discord.py import Embed, Colour
+from discord import Embed, Colour
 from discord.ext import commands
 
 class Snipe(commands.Cog):
