@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 import os
 from keep_alive import keep_alive
@@ -6,7 +7,7 @@ keep_alive()
 
 bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
 bot.remove_command("help")
-
+tree = app_commands.CommandTree(bot)
 token = os.environ['TOKEN']
 
 cogs = ["cogs.basic", "cogs.Snipe", "cogs.help", "cogs.moderation", "cogs.WelcomeCog"]  # Modify the cogs list to include the correct path to the basic.commands file
@@ -71,7 +72,7 @@ class Butts(discord.ui.View):
             embed = discord.Embed(title=f"You don't have the permissions for this!")
             await interaction.send(embed=embed, ephemeral=True)
 
-@bot.slash_command(name="ticket", description="Setup the ticket system!")
+@tree.command(name="ticket", description="Setup the ticket system!")
 async def ticket(ctx: discord.Interaction):
     if ctx.user.guild_permissions.administrator and ctx.user is not None:
         embed = discord.Embed(description=f"Press the button below to create a Ticket!")
