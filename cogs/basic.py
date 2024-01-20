@@ -1,5 +1,5 @@
-import nextcord
-from nextcord.ext import commands
+import discord.py
+from discord.ext import commands
 
 class Basic(commands.Cog, name="basic"):
     def __init__(self, bot):
@@ -7,14 +7,14 @@ class Basic(commands.Cog, name="basic"):
     @commands.command(name="serverinfo", description="Shows info about the server.", usage=".serverinfo")
     async def serverinfo(self, ctx):
         staff_roles = ("Founder", "Head Administrator", "Trial Admin", "Moderators", "Trial Mod")
-        embed2 = nextcord.Embed(timestamp=ctx.message.created_at, color=ctx.author.color)
+        embed2 = discord.Embed(timestamp=ctx.message.created_at, color=ctx.author.color)
         embed2.add_field(name='Name', value=f"{ctx.guild.name}", inline=False)
         embed2.add_field(name='Owner', value=f'{ctx.guild.owner.mention}', inline=False)
         embed2.add_field(name='Verification Level', value=str(ctx.guild.verification_level), inline=False)
         embed2.add_field(name='Highest role', value=ctx.guild.roles[-2], inline=False)
         embed2.add_field(name='Contributers:', value="None")
         for r in staff_roles:
-            role = nextcord.utils.get(ctx.guild.roles, name=r)
+            role = discord.utils.get(ctx.guild.roles, name=r)
             if role:
                 members = '\n'.join([member.name for member in role.members])
                 embed2.add_field(name=f'{r}', value=members, inline=False)
@@ -28,13 +28,13 @@ class Basic(commands.Cog, name="basic"):
         await ctx.send(embed=embed2)
 
     @commands.command(name="userinfo", description="Shows information about a user.", usage=".userinfo [mention]")
-    async def userinfo(self, ctx, member: nextcord.Member = None):
+    async def userinfo(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
             roles = [role for role in ctx.author.roles]
         else:
             roles = [role for role in member.roles]
-        embed = nextcord.Embed(title=f"{member}", colour=member.colour, timestamp=ctx.message.created_at)
+        embed = discord.Embed(title=f"{member}", colour=member.colour, timestamp=ctx.message.created_at)
         embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
         embed.set_author(name="User Info: ")
         embed.add_field(name="ID:", value=member.id, inline=False)
@@ -52,10 +52,10 @@ class Basic(commands.Cog, name="basic"):
         return
 
     @commands.command(name="avatar", aliases=["av"], description="Shows the avatar of a user.", usage=".avatar [mention]")
-    async def avatar(self, ctx, member: nextcord.Member = None):
+    async def avatar(self, ctx, member: discord.Member = None):
         if member is None:
             member = ctx.author
-        embed = nextcord.Embed(title=f"{member}'s Avatar", colour=member.colour, timestamp=ctx.message.created_at)
+        embed = discord.Embed(title=f"{member}'s Avatar", colour=member.colour, timestamp=ctx.message.created_at)
         embed.set_image(url=member.avatar.url)
         embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
@@ -65,7 +65,7 @@ class Basic(commands.Cog, name="basic"):
         await ctx.send(f"Pong! {round(self.bot.latency * 1000)}ms")
     @commands.command(name= "support", description="Get the link to the bot's support server.", usage=".support")
     async def support(self, ctx):
-        embed = nextcord.Embed(title="Support Server", colour=nextcord.Colour.random(), timestamp=ctx.message.created_at)
+        embed = discord.Embed(title="Support Server", colour=discord.Colour.random(), timestamp=ctx.message.created_at)
         embed.add_field(name="Support Server:", value="[Click Here](https://discord.com/invite/38Zj8AZAMM)", inline=False)
         embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)     
