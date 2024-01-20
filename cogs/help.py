@@ -1,5 +1,5 @@
-import nextcord
-from nextcord.ext import commands
+import discord.py
+from discord.ext import commands
 
 class Help(commands.Cog):
     def __init__(self, bot):
@@ -13,20 +13,20 @@ class Help(commands.Cog):
             if not command:
                 return await ctx.send(f"No information found for command `{command_name}`.")
 
-            embed = nextcord.Embed(
+            embed = discord.Embed(
                 title=f"Command Help: `{command.name}`",
                 description=command.description,
-                color=nextcord.Colour.random()
+                color=discord.Colour.random()
             )
             embed.add_field(name="Usage", value=f"```{command.usage}```" if command.usage else "No usage information provided.")
-            embed.set_thumbnail(url =ctx.guild.icon.url)
-            embed.set_footer(text =f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+            embed.set_thumbnail(url=ctx.guild.icon.url)
+            embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
             await ctx.send(embed=embed)
         else:
-            embed = nextcord.Embed(
+            embed = discord.Embed(
                 title="Commands Help",
                 description="Shows available commands and their descriptions. Usage: `.help [command_name]`",
-                color=nextcord.Colour.random()
+                color=discord.Colour.random()
             )
 
             commands_list = [f"`{command.name}`" for cog in self.bot.cogs.values() for command in cog.get_commands() if not command.hidden]
@@ -35,7 +35,7 @@ class Help(commands.Cog):
 
             embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            server_url=ctx.guild.icon.url
+            server_url = ctx.guild.icon.url
             embed.set_thumbnail(url=server_url)
             await ctx.send(embed=embed)
 
