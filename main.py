@@ -37,9 +37,9 @@ class Buttons(discord.ui.View):
     @discord.ui.button(label="Ticket Support", style=discord.ButtonStyle.green, emoji="📧")
     async def teste3(self, button: discord.ui.Button, interaction: discord.Interaction):
         overwrites = {
-            interaction.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-            interaction.guild.me: discord.PermissionOverwrite(read_messages=True),
-            interaction.user: discord.PermissionOverwrite(read_messages=True)
+            discord.interaction.guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            discord.interaction.guild.me: discord.PermissionOverwrite(read_messages=True),
+            discord.interaction.user: discord.PermissionOverwrite(read_messages=True)
         }
         channel = await interaction.guild.create_text_channel(f"Ticket-", overwrites=overwrites)
         channel_id = channel.id
