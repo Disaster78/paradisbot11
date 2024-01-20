@@ -2,13 +2,14 @@ import discord
 from discord.ext import commands
 import os
 from keep_alive import keep_alive
+
 keep_alive()
 
 bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
 bot.remove_command("help")
 token = os.environ['TOKEN']
 
-cogs = ["cogs.basic", "cogs.Snipe", "cogs.help", "cogs.moderation", "cogs.WelcomeCog"]  # Modify the cogs list to include the correct path to the basic.commands file
+cogs = ["cogs.basic", "cogs.Snipe", "cogs.help", "cogs.moderation", "cogs.WelcomeCog"] 
 
 @bot.event
 async def on_ready():
@@ -35,17 +36,17 @@ class Buttons(discord.ui.View):
         self.value = None
 
     @discord.ui.button(label="Ticket Support", style=discord.ButtonStyle.green, emoji="📧")
-    async def teste3(self, button: discord.ui.Button, interaction: discord.Interaction):
+    async def teste3(self, button: discord.ui.Button, button_ctx: discord.Interaction):
         overwrites = {
-            interaction.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-            interaction.guild.me: discord.PermissionOverwrite(read_messages=True),
-            interaction.user: discord.PermissionOverwrite(read_messages=True)
+            button_ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            button_ctx.guild.me: discord.PermissionOverwrite(read_messages=True),
+            button_ctx.user: discord.PermissionOverwrite(read_messages=True)
         }
-        channel = await interaction.guild.create_text_channel(f"Ticket-", overwrites=overwrites)
+        channel = await button_ctx.guild.create_text_channel(f"Ticket-", overwrites=overwrites)
         channel_id = channel.id
         embed = discord.Embed(title="Ticket Support", description=f"Thank you for requesting help.\nState your problems or questions here and await a response.")
         await channel.send(embed=embed, view=Butts())
-        await interaction.response.send_message(f"Ticket created <#{channel_id}>..", ephemeral=True)
+        await button_ctx.send(f"Ticket created <#{channel_id}>..", ephemeral=True)
 
 class Butts(discord.ui.View):
 
@@ -61,14 +62,15 @@ class Butts(discord.ui.View):
     async def teste2(self, button: discord.ui.Button, interaction: discord.Interaction):
         if interaction.user.guild_permissions.administrator and interaction.user is not None:
             embed = discord.Embed(title=f"Claimed Ticket", description=f"Your ticket will be handled by {interaction.user.mention}.")
-            await interaction.response.send_message(embed=embed)
+            await interaction.send(embed=embed)
+            interaction = await bot.wait_for("button_click", check=lambda inter: inter.custom_id == "teste2")
 
             async def button_callback(button_inter: discord.Interaction):
                 Butts.disabled = True
             Butts.callback = button_callback
         else:
             embed = discord.Embed(title=f"You don't have the permissions for this!")
-            await interaction.response.send_message(embed=embed, ephemeral=True)
+            await interaction.send(embed=embed, ephemeral=True)
 
 @bot.tree.command(name="ticket", description="Setup the ticket system!")
 async def ticket(ctx: discord.Interaction):
@@ -79,21 +81,5 @@ async def ticket(ctx: discord.Interaction):
     else:
         embed = discord.Embed(title=f"You don't have the permissions for this!")
         await ctx.response.send_message(embed=embed, ephemeral=True)
-
-@bot.event
-async def on_button_click(interaction: discord.Interaction, button: discord.ui.Button):
-    view = button.view
-    if isinstance(view, Butts):
-        if button.custom_id == "teste2":
-            if interaction.user.guild_permissions.administrator and interaction.user is not None:
-                embed = discord.Embed(title=f"Claimed Ticket", description=f"Your ticket will be handled by {interaction.user.mention}.")
-                await interaction.response.send_message(embed=embed)
-
-                async def button_callback(button_inter: discord.Interaction):
-                    Butts.disabled = True
-                Butts.callback = button_callback
-            else:
-                embed = discord.Embed(title=f"You don't have the permissions for this!")
-                await interaction.response.send_message(embed=embed, ephemeral=True)
 
 bot.run(token)
