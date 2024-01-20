@@ -81,5 +81,8 @@ async def ticket(ctx: discord.Interaction):
     else:
         embed = discord.Embed(title=f"You don't have the permissions for this!")
         await ctx.response.send_message(embed=embed, ephemeral=True)
-
+@bot.event
+async def on_button_click(interaction):
+    await interaction.response.defer()
+    
 bot.run(token)
