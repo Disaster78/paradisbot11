@@ -208,28 +208,16 @@ class Moderation(commands.Cog, name="Moderation"):
         except nextcord.HTTPException:
             await self.send_error_embed(ctx, "An error occurred while timing out the member.")
             
-    @commands.command(name='webhook', description='Create a webhook for a specific channel', usage='webhook <channel_mention>')
+    @commands.command(name="webhook", description="Create a webhook for a specific channel", usage='webhook <channel_mention>')
     @commands.has_permissions(manage_webhooks=True)
     async def create_webhook(self, ctx, channel: discord.TextChannel):
-        """
-        Create a webhook for the specified channel.
-
-        Parameters:
-        - channel (TextChannel): The channel to create the webhook in.
-        """
-
-        # Create a webhook for the specified channel
         webhook = await channel.create_webhook(name='MyWebhook')
-
-        # Create an embed for the response
         embed = discord.Embed(
             title='Webhook Created',
             description=f'A webhook has been created for {channel.mention}',
             color=discord.Color.green()
         )
         embed.add_field(name='Webhook URL', value=webhook.url)
-
-        # Send the embed message
         await ctx.send(embed=embed)
 
 def setup(bot):
