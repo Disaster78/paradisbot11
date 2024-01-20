@@ -85,6 +85,15 @@ async def on_button_click(interaction: discord.Interaction, button: discord.ui.B
     view = button.view
     if isinstance(view, Butts):
         if button.custom_id == "teste2":
-            await interaction.response.send_message("Button clicked!", ephemeral=True)
+            if interaction.user.guild_permissions.administrator and interaction.user is not None:
+                embed = discord.Embed(title=f"Claimed Ticket", description=f"Your ticket will be handled by {interaction.user.mention}.")
+                await interaction.response.send_message(embed=embed)
+
+                async def button_callback(button_inter: discord.Interaction):
+                    Butts.disabled = True
+                Butts.callback = button_callback
+            else:
+                embed = discord.Embed(title=f"You don't have the permissions for this!")
+                await interaction.response.send_message(embed=embed, ephemeral=True)
 
 bot.run(token)
