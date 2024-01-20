@@ -77,12 +77,10 @@ async def ticket(ctx: discord.Interaction):
     if ctx.user.guild_permissions.administrator and ctx.user is not None:
         embed = discord.Embed(description=f"Press the button below to create a Ticket!")
         buttons_view = Buttons()
-        await ctx.response.send_message(embed=embed, view=buttons_view)
+        await interaction.response.defer(embed=embed, view=buttons_view)
     else:
         embed = discord.Embed(title=f"You don't have the permissions for this!")
-        await ctx.response.send_message(embed=embed, ephemeral=True)
-@bot.event
-async def on_button_click(interaction):
-    await interaction.response.defer()
+        await interaction.defer(embed=embed, ephemeral=True)
+
     
 bot.run(token)
